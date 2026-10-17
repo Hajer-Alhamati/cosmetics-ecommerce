@@ -1,174 +1,8 @@
 
-// import { useState } from 'react'
-// import { useProducts } from '../hooks/useProducts'
-// import ProductCard from '../components/common/ProductCard'
-
-// export default function ProductsPage() {
-//   const [search, setSearch] = useState('')
-//   const [page, setPage] = useState(1)
-
-//   const limit = 10
-
-//   const {
-//     data,
-//     isPending,
-//     isError,
-//     error,
-//     refetch,
-//     isFetching,
-//   } = useProducts({
-//     search,
-//     page,
-//     limit,
-//   })
-
-//   const totalPages = Math.ceil((data?.total ?? 0) / limit)
-
-//   function handleSearch(value: string) {
-//     setSearch(value)
-//     setPage(1)
-//   }
-
-//   return (
-//     <main className="min-h-screen bg-[#faf9f7] px-4 py-8 sm:px-6 lg:px-10">
-//       <div className="mx-auto max-w-7xl">
-//         <header className="mb-8 rounded-2xl bg-white p-6 shadow-sm sm:p-10">
-//           <p className="mb-2 text-xs uppercase tracking-[0.3em] text-green-800">
-//             Beauty & Lifestyle
-//           </p>
-
-//           <h1 className="text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
-//             Explore Our Shop
-//           </h1>
-
-//           <p className="mt-4 max-w-2xl text-sm leading-6 text-gray-500">
-//             Discover our collection of products and find your favorites.
-//           </p>
-//         </header>
-
-//         <section>
-//           <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-//             <div>
-//               <h2 className="text-xl font-semibold text-gray-900">
-//                 Products
-//               </h2>
-
-//               <p className="mt-1 text-sm text-gray-500">
-//                 {data ? `${data.total} products found` : 'Discover our collection'}
-//               </p>
-//             </div>
-
-//             <input
-//               type="search"
-//               value={search}
-//               onChange={(event) => handleSearch(event.target.value)}
-//               placeholder="Search products..."
-//               aria-label="Search products"
-//               className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-green-800 focus:ring-2 focus:ring-green-800/10 sm:max-w-sm"
-//             />
-//           </div>
-
-//           {isPending ? (
-//             <div
-//               role="status"
-//               className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
-//             >
-//               {Array.from({ length: 10 }, (_, index) => (
-//                 <div
-//                   key={index}
-//                   className="h-72 animate-pulse rounded-xl bg-gray-200"
-//                 />
-//               ))}
-//               <span className="sr-only">Loading products...</span>
-//             </div>
-//           ) : isError ? (
-//             <div className="rounded-xl border border-red-200 bg-white p-8 text-center">
-//               <p className="font-medium text-red-700">
-//                 Could not load products.
-//               </p>
-
-//               <p className="mt-2 text-sm text-gray-500">
-//                 {error.message}
-//               </p>
-
-//               <button
-//                 onClick={() => refetch()}
-//                 className="mt-4 rounded-lg bg-green-800 px-5 py-2 text-white hover:bg-green-900"
-//               >
-//                 Try Again
-//               </button>
-//             </div>
-//           ) : data.products.length === 0 ? (
-//             <div className="rounded-xl bg-white p-12 text-center">
-//               <h3 className="text-lg font-semibold text-gray-800">
-//                 No products found
-//               </h3>
-
-//               <p className="mt-2 text-sm text-gray-500">
-//                 Try another search keyword.
-//               </p>
-//             </div>
-//           ) : (
-//             <>
-//               {isFetching && (
-//                 <p className="mb-3 text-xs text-gray-500" role="status">
-//                   Updating products...
-//                 </p>
-//               )}
-
-//               <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-//                 {data.products.map((product) => (
-//                   <ProductCard key={product.id} product={product} />
-//                 ))}
-//               </div>
-
-//               <nav
-//                 aria-label="Product pagination"
-//                 className="mt-8 flex flex-wrap items-center justify-center gap-4"
-//               >
-//                 <button
-//                   disabled={page === 1 || isFetching}
-//                   onClick={() => setPage((current) => current - 1)}
-//                   className="rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-40"
-//                 >
-//                   Previous
-//                 </button>
-
-//                 <span className="text-sm text-gray-600">
-//                   Page {page} of {totalPages}
-//                 </span>
-
-//                 <button
-//                   disabled={
-//                     page >= totalPages || isFetching
-//                   }
-//                   onClick={() => setPage((current) => current + 1)}
-//                   className="rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-40"
-//                 >
-//                   Next
-//                 </button>
-//               </nav>
-//             </>
-//           )}
-//         </section>
-//       </div>
-//     </main>
-//   )
-// }
-
-
 import { useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { getCategories } from '../api/products'
+import { FEATURED_CATEGORIES } from '../constants/categories'
 import { useProducts } from '../hooks/useProducts'
 import ProductCard from '../components/common/ProductCard'
-
-const FEATURED_CATEGORIES = [
-    'beauty',
-    'fragrances',
-    'skin-care',
-    'womens-bags',
-]
 
 function formatCategory(category: string) {
     return category
@@ -182,15 +16,6 @@ export default function ProductsPage() {
     const [page, setPage] = useState(1)
 
     const limit = 10
-
-    const {
-        data: categories = [],
-        isError: categoriesError,
-    } = useQuery({
-        queryKey: ['product-categories'],
-        queryFn: getCategories,
-        staleTime: 1000 * 60 * 30,
-    })
 
     const {
         data,
@@ -208,9 +33,7 @@ export default function ProductsPage() {
 
     const totalPages = Math.ceil((data?.total ?? 0) / limit)
 
-    const visibleCategories = FEATURED_CATEGORIES.filter((item) =>
-        categories.includes(item),
-    )
+    const visibleCategories = FEATURED_CATEGORIES
 
     function changeCategory(value: string) {
         setCategory(value)
@@ -307,10 +130,7 @@ export default function ProductsPage() {
                     <div
                         aria-hidden="true"
                         className="pointer-events-none absolute bottom-0 left-10 text-5xl text-[#f0f0ed]"
-                    >
-
-                    </div>
-
+                    />
 
                     <h1 className="relative z-10 text-3xl font-semibold tracking-tight sm:text-5xl">
                         Explore Our Shop
@@ -318,22 +138,23 @@ export default function ProductsPage() {
 
                     <div className="mt-5 flex justify-center text-start">
                         <p className="max-w-2xl text-xs leading-6 text-gray-500 sm:text-sm sm:leading-7">
-                            Discover your next favorite. Explore our collection of everyday
-                            essentials, curated to help you find products that suit your style.
-                            Browse the collection, search by keyword, and select any
-                            product to learn more about its details, price and rating.
+                             From skincare to makeup, our platform features a wide range of products that
+                             cater to all your beauty needs. We strive to provide our customers with a 
+                             luxury shopping experience, from browsing through our carefully selected 
+                             products to receiving them in our signature packaging. Shop with us for
+                             the ultimate in beauty luxury.
                         </p>
                     </div>
                 </section>
 
                 {/* Collection */}
-                <section id="collection" className=' bg-white p-3'>
+                <section id="collection" className="bg-white p-3">
                     {/* Categories */}
                     <div className="mb-3 flex flex-wrap items-center gap-1.5 rounded-lg p-2">
                         <button
                             onClick={() => changeCategory('')}
                             aria-pressed={!category}
-                            className={`rounded-md px-3 py-2 text-[10px] transition ${!category
+                            className={`rounded-md px-3 py-2 text-[12px] transition ${!category
                                 ? 'bg-[#f0f0ed] text-[#222]'
                                 : 'text-gray-500 hover:bg-gray-50'
                                 }`}
@@ -346,7 +167,7 @@ export default function ProductsPage() {
                                 key={item}
                                 onClick={() => changeCategory(item)}
                                 aria-pressed={category === item}
-                                className={`rounded-md px-3 py-2 text-[10px] transition ${category === item
+                                className={`rounded-md px-3 py-2 text-[12px] transition ${category === item
                                     ? 'bg-[#e6eee5] font-medium text-[#2f633d]'
                                     : 'text-gray-500 hover:bg-gray-50'
                                     }`}
@@ -356,15 +177,7 @@ export default function ProductsPage() {
                         ))}
                     </div>
 
-                    {categoriesError && (
-                        <p className="mb-3 text-xs text-amber-700">
-                            Categories could not be loaded. You can still browse and
-                            search all products.
-                        </p>
-                    )}
-
-
-                    {/* Loading */}
+                    {/* Loading, Error, Products */}
                     {isPending ? (
                         <div
                             role="status"
@@ -380,7 +193,6 @@ export default function ProductsPage() {
                             <span className="sr-only">Loading products...</span>
                         </div>
                     ) : isError ? (
-                        /* Error */
                         <div className="rounded-xl border border-red-100 bg-white p-8 text-center">
                             <h2 className="font-medium text-red-700">
                                 Unable to load products
@@ -398,7 +210,6 @@ export default function ProductsPage() {
                             </button>
                         </div>
                     ) : data.products.length === 0 ? (
-                        /* Empty results */
                         <div className="rounded-xl bg-white px-5 py-16 text-center">
                             <h2 className="font-medium">No products found</h2>
 
