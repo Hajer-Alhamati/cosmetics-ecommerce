@@ -2,6 +2,7 @@
 import { Link, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { getProductById } from '../api/products'
+import Footer from "../components/layout/Footer";
 
 export default function ProductDetailsPage() {
   const { id } = useParams()
@@ -31,10 +32,11 @@ export default function ProductDetailsPage() {
 
   return (
     <main className="min-h-screen bg-[#faf9f7] p-6 sm:p-10">
+      
       <div className="mx-auto max-w-5xl">
         <Link
           to="/products"
-          className="text-sm text-green-800 hover:underline"
+          className="text-sm text-primary hover:underline"
         >
           ← Back to products
         </Link>
@@ -49,7 +51,7 @@ export default function ProductDetailsPage() {
           </div>
 
           <div className="flex flex-col items-start gap-4">
-            <p className="text-sm capitalize text-green-800">
+            <p className="text-sm capitalize text-primary">
               {product.category}
             </p>
 
@@ -74,6 +76,7 @@ export default function ProductDetailsPage() {
             </p>
           </div>
         </div>
+        <Footer />
       </div>
     </main>
   )

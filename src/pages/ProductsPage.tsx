@@ -1,21 +1,23 @@
 
-import { useState } from 'react'
-import { FEATURED_CATEGORIES } from '../constants/categories'
-import { useProducts } from '../hooks/useProducts'
-import ProductCard from '../components/common/ProductCard'
+import { useState } from "react";
+import { FEATURED_CATEGORIES } from "../constants/categories";
+import { useProducts } from "../hooks/useProducts";
+import ProductCard from "../components/common/ProductCard";
+import Header from "../components/layout/Navbar";
+import Footer from "../components/layout/Footer";
 
 function formatCategory(category: string) {
     return category
-        .replace(/-/g, ' ')
-        .replace(/\b\w/g, (letter) => letter.toUpperCase())
+        .replace(/-/g, " ")
+        .replace(/\b\w/g, (letter) => letter.toUpperCase());
 }
 
 export default function ProductsPage() {
-    const [search, setSearch] = useState('')
-    const [category, setCategory] = useState('')
-    const [page, setPage] = useState(1)
+    const [search, setSearch] = useState("");
+    const [category, setCategory] = useState("");
+    const [page, setPage] = useState(1);
 
-    const limit = 10
+    const limit = 10;
 
     const {
         data,
@@ -29,100 +31,41 @@ export default function ProductsPage() {
         category,
         page,
         limit,
-    })
+    });
 
-    const totalPages = Math.ceil((data?.total ?? 0) / limit)
+    const totalPages = Math.ceil((data?.total ?? 0) / limit);
 
-    const visibleCategories = FEATURED_CATEGORIES
+    const visibleCategories = FEATURED_CATEGORIES;
 
     function changeCategory(value: string) {
-        setCategory(value)
-        setSearch('')
-        setPage(1)
+        setCategory(value);
+        setSearch("");
+        setPage(1);
     }
 
     function changeSearch(value: string) {
-        setSearch(value)
-        setCategory('')
-        setPage(1)
+        setSearch(value);
+        setCategory("");
+        setPage(1);
     }
 
     return (
         <main className="min-h-screen bg-[#f8f8f6] text-[#171717]">
-            {/* Navigation */}
-            <header className="sticky top-0 z-20 border-b border-gray-100 bg-white/95 backdrop-blur">
-                <div className="flex w-full items-center gap-2 px-3 py-3 sm:gap-4 sm:px-6">
-                    <a
-                        href="/products"
-                        className="shrink-0 rounded-lg bg-[#f7f7f5] px-3 py-3 text-xs font-semibold tracking-tight sm:px-5"
-                    >
-                        <span className="text-[#32613d]">✧</span> crystal.
-                    </a>
 
-                    <nav className="hidden flex-1 items-center justify-center gap-1 md:flex">
-                        <a
-                            href="/products"
-                            className="rounded-lg bg-[#f7f7f5] px-5 py-3 text-[10px] uppercase tracking-wide"
-                        >
-                            Shop
-                        </a>
-
-                        <a
-                            href="#collection"
-                            className="rounded-lg px-4 py-3 text-[10px] uppercase tracking-wide text-gray-500 transition hover:bg-gray-50"
-                        >
-                            Collections
-                        </a>
-
-                        <a
-                            href="#about"
-                            className="rounded-lg px-4 py-3 text-[10px] uppercase tracking-wide text-gray-500 transition hover:bg-gray-50"
-                        >
-                            Contact
-                        </a>
-
-                        <a
-                            href="#about"
-                            className="rounded-lg px-4 py-3 text-[10px] uppercase tracking-wide text-gray-500 transition hover:bg-gray-50"
-                        >
-                            About
-                        </a>
-                    </nav>
-
-                    <label className="flex min-w-0 flex-1 items-center rounded-lg border border-gray-100 bg-[#fafaf9] px-3 py-3 md:max-w-56">
-                        <input
-                            type="search"
-                            value={search}
-                            onChange={(event) => changeSearch(event.target.value)}
-                            placeholder="Search..."
-                            aria-label="Search products"
-                            className="w-full min-w-0 bg-transparent text-xs outline-none placeholder:text-gray-500"
-                        />
-
-                        <span
-                            aria-hidden="true"
-                            className="text-sm text-gray-400"
-                        >
-                            ⌕
-                        </span>
-                    </label>
-
-                    <a
-                        href=""
-                        className="shrink-0 rounded-lg bg-[#2f633d] px-3 py-3 text-[10px] font-medium text-white transition hover:bg-[#234d30] sm:px-5"
-                    >
-                        <span className="hidden sm:inline">VIEW CART</span>
-                        <span className="sm:hidden">SHOP</span>
-                    </a>
-                </div>
-            </header>
+            {/* Shared Header */}
+            <Header
+                search={search}
+                onSearchChange={changeSearch}
+            />
 
             <div className="w-full px-3 pb-10 pt-2 sm:px-5">
+
                 {/* Hero */}
-                <section className="relative mb-3 min-h-40 overflow-hidden rounded-xl border border-[#eeeeea] bg-white px-5 py-6 sm:min-h-52 sm:px-8 sm:py-8">
+
+                <section className="relative mb-3 min-h-40 overflow-hidden rounded-xl border border-secondary bg-white px-5 py-6 sm:min-h-52 sm:px-8 sm:py-8">
                     <div
                         aria-hidden="true"
-                        className="pointer-events-none absolute -right-5 top-0 text-8xl font-extralight text-[#efefeb] sm:right-10 sm:text-9xl"
+                        className="pointer-events-none absolute -right-5 top-0 text-8xl font-extralight text-secondary sm:right-10 sm:text-9xl"
                     >
                         ✧
                     </div>
@@ -138,25 +81,26 @@ export default function ProductsPage() {
 
                     <div className="mt-5 flex justify-center text-start">
                         <p className="max-w-2xl text-xs leading-6 text-gray-500 sm:text-sm sm:leading-7">
-                             From skincare to makeup, our platform features a wide range of products that
-                             cater to all your beauty needs. We strive to provide our customers with a 
-                             luxury shopping experience, from browsing through our carefully selected 
-                             products to receiving them in our signature packaging. Shop with us for
-                             the ultimate in beauty luxury.
+                            From skincare to makeup, our platform features a wide range of products that
+                            cater to all your beauty needs. We strive to provide our customers with a
+                            luxury shopping experience, from browsing through our carefully selected
+                            products to receiving them in our signature packaging. Shop with us for
+                            the ultimate in beauty luxury.
                         </p>
                     </div>
                 </section>
 
                 {/* Collection */}
-                <section id="collection" className="bg-white p-3">
+                <section id="collection" className="bg-white p-4">
+
                     {/* Categories */}
-                    <div className="mb-3 flex flex-wrap items-center gap-1.5 rounded-lg p-2">
+                    <div className="mb-3 flex flex-wrap items-center gap-1.5 rounded-lg">
                         <button
-                            onClick={() => changeCategory('')}
+                            onClick={() => changeCategory("")}
                             aria-pressed={!category}
                             className={`rounded-md px-3 py-2 text-[12px] transition ${!category
-                                ? 'bg-[#f0f0ed] text-[#222]'
-                                : 'text-gray-500 hover:bg-gray-50'
+                                    ? "bg-[#f0f0ed] text-[#222]"
+                                    : "text-gray-500 hover:bg-gray-50"
                                 }`}
                         >
                             All Products
@@ -168,8 +112,8 @@ export default function ProductsPage() {
                                 onClick={() => changeCategory(item)}
                                 aria-pressed={category === item}
                                 className={`rounded-md px-3 py-2 text-[12px] transition ${category === item
-                                    ? 'bg-[#e6eee5] font-medium text-[#2f633d]'
-                                    : 'text-gray-500 hover:bg-gray-50'
+                                        ? "bg-[#e6eee5] font-medium text-primary"
+                                        : "text-gray-500 hover:bg-gray-50"
                                     }`}
                             >
                                 {formatCategory(item)}
@@ -190,7 +134,9 @@ export default function ProductsPage() {
                                 />
                             ))}
 
-                            <span className="sr-only">Loading products...</span>
+                            <span className="sr-only">
+                                Loading products...
+                            </span>
                         </div>
                     ) : isError ? (
                         <div className="rounded-xl border border-red-100 bg-white p-8 text-center">
@@ -204,14 +150,16 @@ export default function ProductsPage() {
 
                             <button
                                 onClick={() => refetch()}
-                                className="mt-4 rounded-md bg-[#2f633d] px-5 py-2.5 text-sm text-white hover:bg-[#234d30]"
+                                className="mt-4 rounded-md bg-primary px-5 py-2.5 text-sm text-white hover:bg-[#234d30]"
                             >
                                 Try Again
                             </button>
                         </div>
                     ) : data.products.length === 0 ? (
                         <div className="rounded-xl bg-white px-5 py-16 text-center">
-                            <h2 className="font-medium">No products found</h2>
+                            <h2 className="font-medium">
+                                No products found
+                            </h2>
 
                             <p className="mt-2 text-sm text-gray-500">
                                 Try another keyword or select a different category.
@@ -219,19 +167,19 @@ export default function ProductsPage() {
 
                             <button
                                 onClick={() => {
-                                    setSearch('')
-                                    setCategory('')
-                                    setPage(1)
+                                    setSearch("");
+                                    setCategory("");
+                                    setPage(1);
                                 }}
-                                className="mt-4 text-sm text-[#2f633d] underline"
+                                className="mt-4 text-sm text-primary underline"
                             >
                                 Clear filters
                             </button>
                         </div>
                     ) : (
                         <>
-                            {/* Product grid */}
-                            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 xl:grid-cols-5">
+                            {/* Product Grid */}
+                            <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3 lg:grid-cols-4">
                                 {data.products.map((product) => (
                                     <ProductCard
                                         key={product.id}
@@ -247,7 +195,9 @@ export default function ProductsPage() {
                             >
                                 <button
                                     disabled={page === 1 || isFetching}
-                                    onClick={() => setPage((current) => current - 1)}
+                                    onClick={() =>
+                                        setPage((current) => current - 1)
+                                    }
                                     className="rounded-md border border-gray-200 bg-white px-4 py-2 text-xs disabled:opacity-40"
                                 >
                                     ← Previous
@@ -263,7 +213,9 @@ export default function ProductsPage() {
                                         isFetching ||
                                         totalPages === 0
                                     }
-                                    onClick={() => setPage((current) => current + 1)}
+                                    onClick={() =>
+                                        setPage((current) => current + 1)
+                                    }
                                     className="rounded-md border border-gray-200 bg-white px-4 py-2 text-xs disabled:opacity-40"
                                 >
                                     Next →
@@ -274,17 +226,8 @@ export default function ProductsPage() {
                 </section>
 
                 {/* Footer */}
-                <footer
-                    id="about"
-                    className="mt-10 border-t border-[#e9e7df] py-5 text-center text-[10px] text-gray-500"
-                >
-                    <p className="font-medium text-[#2f633d]">crystal.</p>
-
-                    <p className="mt-1">
-                        Your everyday essentials, all in one place.
-                    </p>
-                </footer>
+                <Footer />
             </div>
         </main>
-    )
+    );
 }
